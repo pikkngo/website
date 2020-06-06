@@ -52,6 +52,7 @@ function pre_signup(data, callback) {
                                     message: "SomeInternal error",
                                 })
                             else
+                            console.log('okay')
                                 callback({
                                     pre_signup: true,
                                     token: encryptJSON(data),
