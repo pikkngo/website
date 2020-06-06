@@ -1,0 +1,219 @@
+:root {
+    --image: url("../assets/images/img.png");
+}
+
+@font-face {
+    font-family: pikkngo;
+    src: url("../assets/fonts/primary.woff2");
+}
+@font-face {
+    font-family: pikkngo_medium;
+    src: url("../assets/fonts/primary_medium.woff2");
+}
+@font-face {
+    font-family: pikkngo_bold;
+    src: url("../assets/fonts/primary_bold.woff2");
+}
+
+$primaryColor: green;
+$regular_font: pikkngo;
+$medium_font: pikkngo_medium;
+$bold_font: pikkngo_bold;
+
+.first {
+    .wrap1 {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+        display: flex;
+        flex-direction: column;
+        font-family: $regular_font;
+        .top {
+            position: relative;
+            background-color: yellow;
+            height: calc(100% - 321px);
+            background-image: var(--image);
+            background-position: center;
+            background-repeat: no-repeat;
+            .dots {
+                position: absolute;
+                width: 40px;
+                height: 10px;
+                bottom: 20px;
+                left: calc(50% - 25px);
+                // background-color: grey;
+                display: flex;
+                .dot {
+                    margin-left: auto;
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    background-color: green;
+                }
+            }
+        }
+        .bottom {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .details {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 20px;
+                .tagline_title {
+                    font-family: $bold_font;
+                    font-size: 18px;
+                }
+                .discription {
+                    display: flex;
+                    text-align: center;
+                    justify-content: center;
+                    color: rgb(60, 60, 60);
+                    font-size: 15px;
+                }
+            }
+            .login_div {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                .set_location_btn {
+                    height: 40px;
+                }
+                .login {
+                    margin-top: 10px;
+                    .text {
+                        font-size: 15px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.wrap {
+    font-family: $regular_font;
+    position: fixed;
+    animation: otp_appear 500ms forwards;
+    top: 100%;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-y: scroll;
+    .title {
+        margin-bottom: 20px;
+        font-family: $bold_font;
+        font-size: 40px;
+        background-image: linear-gradient(
+            11deg,
+            #f83,
+            #f07 53%,
+            #202122 54%,
+            #1a1a1a
+        );
+        display: inline-block;
+        background-size: cover;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-fill-color: transparent;
+    }
+    .inp {
+        height: 45px;
+        margin-bottom: 20px;
+        border-radius: 15px;
+        border: none;
+        width: 80%;
+        background: rgb(233, 233, 233);
+        font-family: $medium_font;
+        font-size: 18px;
+        padding-left: 20px;
+        outline: none;
+        &:focus {
+            background-color: rgb(243, 243, 243);
+        }
+    }
+    .next {
+        // width: calc(100% - 40px);
+        height: 40px;
+    }
+}
+.otp {
+    position: fixed;
+    z-index: 2;
+    display: none;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    animation: otp_appear 500ms forwards;
+    .otp_div {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .title {
+            position: relative;
+            margin-bottom: 20px;
+            font-family: $bold_font;
+            display: flex;
+            justify-content: center;
+            font-size: 40px;
+            background-image: linear-gradient(
+                11deg,
+                #f83,
+                #f07 53%,
+                #202122 54%,
+                #1a1a1a
+            );  
+            background-size: cover;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        .inp {
+            height: 45px;
+            width: calc(100% - 50px);
+            margin-bottom: 20px;
+            border-radius: 15px;
+            border: none;
+            background: rgb(233, 233, 233);
+            font-family: $medium_font;
+            font-size: 18px;
+            padding-left: 20px;
+            outline: none;
+            &:focus {
+                background-color: rgb(243, 243, 243);
+            }
+        }
+    }
+}
+.signup_submit {
+    height: 40px;
+}
+.login_submit {
+    height: 40px;
+}
+@keyframes otp_appear {
+    from {
+        top: 100%;
+        left: 0px;
+    }
+    to {
+        top: 0px;
+        left: 0px;
+    }
+}

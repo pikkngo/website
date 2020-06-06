@@ -1,0 +1,291 @@
+:root {
+  --image: url("../assets/images/img.png");
+}
+
+@font-face {
+  font-family: pikkngo;
+  src: url("../assets/fonts/primary.woff2");
+}
+
+@font-face {
+  font-family: pikkngo_medium;
+  src: url("../assets/fonts/primary_medium.woff2");
+}
+
+@font-face {
+  font-family: pikkngo_bold;
+  src: url("../assets/fonts/primary_bold.woff2");
+}
+
+.first .wrap1 {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-family: pikkngo;
+}
+
+.first .wrap1 .top {
+  position: relative;
+  background-color: yellow;
+  height: calc(100% - 321px);
+  background-image: var(--image);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.first .wrap1 .top .dots {
+  position: absolute;
+  width: 40px;
+  height: 10px;
+  bottom: 20px;
+  left: calc(50% - 25px);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.first .wrap1 .top .dots .dot {
+  margin-left: auto;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: green;
+}
+
+.first .wrap1 .bottom {
+  padding: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.first .wrap1 .bottom .details {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 20px;
+}
+
+.first .wrap1 .bottom .details .tagline_title {
+  font-family: pikkngo_bold;
+  font-size: 18px;
+}
+
+.first .wrap1 .bottom .details .discription {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  text-align: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #3c3c3c;
+  font-size: 15px;
+}
+
+.first .wrap1 .bottom .login_div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.first .wrap1 .bottom .login_div .set_location_btn {
+  height: 40px;
+}
+
+.first .wrap1 .bottom .login_div .login {
+  margin-top: 10px;
+}
+
+.first .wrap1 .bottom .login_div .login .text {
+  font-size: 15px;
+}
+
+.wrap {
+  font-family: pikkngo;
+  position: fixed;
+  -webkit-animation: otp_appear 500ms forwards;
+          animation: otp_appear 500ms forwards;
+  top: 100%;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  overflow-y: scroll;
+}
+
+.wrap .title {
+  margin-bottom: 20px;
+  font-family: pikkngo_bold;
+  font-size: 40px;
+  background-image: linear-gradient(11deg, #f83, #f07 53%, #202122 54%, #1a1a1a);
+  display: inline-block;
+  background-size: cover;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.wrap .inp {
+  height: 45px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  border: none;
+  width: 80%;
+  background: #e9e9e9;
+  font-family: pikkngo_medium;
+  font-size: 18px;
+  padding-left: 20px;
+  outline: none;
+}
+
+.wrap .inp:focus {
+  background-color: #f3f3f3;
+}
+
+.wrap .next {
+  height: 40px;
+}
+
+.otp {
+  position: fixed;
+  z-index: 2;
+  display: none;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  -webkit-animation: otp_appear 500ms forwards;
+          animation: otp_appear 500ms forwards;
+}
+
+.otp .otp_div {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.otp .otp_div .title {
+  position: relative;
+  margin-bottom: 20px;
+  font-family: pikkngo_bold;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 40px;
+  background-image: linear-gradient(11deg, #f83, #f07 53%, #202122 54%, #1a1a1a);
+  background-size: cover;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.otp .otp_div .inp {
+  height: 45px;
+  width: calc(100% - 50px);
+  margin-bottom: 20px;
+  border-radius: 15px;
+  border: none;
+  background: #e9e9e9;
+  font-family: pikkngo_medium;
+  font-size: 18px;
+  padding-left: 20px;
+  outline: none;
+}
+
+.otp .otp_div .inp:focus {
+  background-color: #f3f3f3;
+}
+
+.signup_submit {
+  height: 40px;
+}
+
+.login_submit {
+  height: 40px;
+}
+
+@-webkit-keyframes otp_appear {
+  from {
+    top: 100%;
+    left: 0px;
+  }
+  to {
+    top: 0px;
+    left: 0px;
+  }
+}
+
+@keyframes otp_appear {
+  from {
+    top: 100%;
+    left: 0px;
+  }
+  to {
+    top: 0px;
+    left: 0px;
+  }
+}
+/*# sourceMappingURL=index.css.map */

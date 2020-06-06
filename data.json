@@ -1,0 +1,14 @@
+{
+	"form":[{
+		"title":"Register Moms",
+		"fields":["Name","Email","Phone","Address"]
+		},
+		{
+		"title":"Register Kids",
+		"fields":["Name","Email","Phone","Address"]
+		}],
+	"moms_short": "Are you someone passionate about cooking and interested in making some money",
+	"kids_short": "Are you someone passionate about eating food and in need of some great quality food",
+	"moms_long": "Well let me guess you are a homemaker and you want to contribute to your home's money pool but you are not able to find a start so here we are providing you with an opportunity to get a start.",
+	"kids_long": "Well let me guess you are a student, or anyone else and you are away from your home and is in search of a way to get quality food for yourself, well we'll help you."
+}
