@@ -1,3 +1,4 @@
 node_modules
 .env
-database
+database/users.db
+database/stores.db
