@@ -267,6 +267,100 @@
   height: 40px;
 }
 
+.error {
+  display: none;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: auto;
+  background-color: red;
+  z-index: 3;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-family: pikkngo_bold;
+  color: white;
+  text-align: center;
+  -webkit-animation: errorAnimation 500ms forwards 0s ease;
+          animation: errorAnimation 500ms forwards 0s ease;
+}
+
+@-webkit-keyframes errorAnimation {
+  0% {
+    -webkit-transform: rotate(0) translateY(-100px);
+            transform: rotate(0) translateY(-100px);
+    opacity: 0;
+  }
+  43% {
+    -webkit-transform: rotate(0) translateY(-100px);
+            transform: rotate(0) translateY(-100px);
+    opacity: 1;
+  }
+  47% {
+    -webkit-transform: rotate(xx) translateY(0);
+            transform: rotate(xx) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: rotate(0) translateY(0);
+            transform: rotate(0) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes errorAnimation {
+  0% {
+    -webkit-transform: rotate(0) translateY(-100px);
+            transform: rotate(0) translateY(-100px);
+    opacity: 0;
+  }
+  43% {
+    -webkit-transform: rotate(0) translateY(-100px);
+            transform: rotate(0) translateY(-100px);
+    opacity: 1;
+  }
+  47% {
+    -webkit-transform: rotate(xx) translateY(0);
+            transform: rotate(xx) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: rotate(0) translateY(0);
+            transform: rotate(0) translateY(0);
+    opacity: 1;
+  }
+}
+
+.button {
+  position: relative;
+  z-index: 5;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 18px;
+  color: white;
+  background-color: #202122;
+  background-image: linear-gradient(165deg, #2fc3ff, #08f 76%, #08f);
+  -webkit-box-shadow: 0 3px 0 0 #08f;
+          box-shadow: 0 3px 0 0 #08f;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.vissible {
+  display: block;
+}
+
 @-webkit-keyframes otp_appear {
   from {
     top: 100%;

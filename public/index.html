@@ -10,13 +10,38 @@
         />
         <title>Welcome</title>
         <link rel="stylesheet" href="./css/index.css" />
-        <link rel="stylesheet" href="./css/basic.css" />
         <script src="./js/element.js"></script>
+        <script src="./js/ajax.js"></script>
+
+        <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-app.js"></script>
+        <!-- <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script> -->
+        <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-auth.js"></script>
+        <script>
+            // Your web app's Firebase configuration
+            var firebaseConfig = {
+                apiKey: "AIzaSyC__JZLspoDBEINmont_Fn1aRrFXuzFqS0",
+                authDomain: "pikkngo.firebaseapp.com",
+                databaseURL: "https://pikkngo.firebaseio.com",
+                projectId: "pikkngo",
+                storageBucket: "pikkngo.appspot.com",
+                messagingSenderId: "272796400252",
+                appId: "1:272796400252:web:4791c906925af41587e7f9",
+                measurementId: "G-L47VNMPP67",
+            }
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig)
+            firebase.analytics()
+        </script>
     </head>
     <body>
         <!-- <div class="error_alert"> -->
+        <div class="error">
+            message goes here
+        </div>
         <div class="root"></div>
 
+        <div id="recap"></div>
         <script src="./js/routers.js"></script>
         <script src="./js/index.js"></script>
     </body>

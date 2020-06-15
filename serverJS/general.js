@@ -1,31 +1,14 @@
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
-require("dotenv").config()
+const { MD5 } = require("./encryption")
 
-function generateId() {
-    return //something
-}
-function onWayEncrypt(text) {
-    const salt = bcrypt.genSaltSync(saltRounds)
-    const hash = bcrypt.hashSync(text, salt)
-    return hash
-}
-function compareEncyption(text, hash) {
-    return bcrypt.compareSync(text, hash)
-}
-function encryptJSON(json, callback) {
-    const key = 'key'
-    return jwt.sign(json, key)
-}
-function decryptJSON(encoded, callback) {
-    const key = 'key'
-    return jwt.verify(encoded, key)
+function generateID() {
+    let s = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
+    let randomString = ""
+    for (let i = 0; i < 10; i++) {
+        randomString += s[Math.floor(Math.random() * s.length)]
+    }
+    return MD5(randomString) + MD5("" + Date.now())
 }
 
 module.exports = {
-    generateId,
-    onWayEncrypt,
-    compareEncyption,
-    encryptJSON,
-    decryptJSON,
+    generateID,
 }
