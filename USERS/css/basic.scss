@@ -1,0 +1,52 @@
+@font-face {
+    font-family: pikkngo;
+    src: url("../assets/fonts/primary.woff2");
+}
+@font-face {
+    font-family: pikkngo_medium;
+    src: url("../assets/fonts/primary_medium.woff2");
+}
+@font-face {
+    font-family: pikkngo_bold;
+    src: url("../assets/fonts/primary_bold.woff2");
+}
+
+$primaryColor: green;
+$regular_font: pikkngo;
+$medium_font: pikkngo_medium;
+$bold_font: pikkngo_bold;
+
+.error {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: auto;
+    background-color: red;
+    z-index: 3;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-family: $bold_font;
+    color: white;
+    text-align: center;
+    animation: errorAnimation 500ms forwards 0s ease;
+}
+@keyframes errorAnimation {
+    0% {
+        transform: rotate(0) translateY(-100px);
+        opacity: 0;
+    }
+    43% {
+        transform: rotate(0) translateY(-100px);
+        opacity: 1;
+    }
+    47% {
+        transform: rotate(xx) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(0) translateY(0);
+        opacity: 1;
+    }
+}
