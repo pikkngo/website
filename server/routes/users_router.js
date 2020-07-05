@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.use(
     cors({
-        origin: "http://192.168.43.41:5500",
+        origin: "http://127.0.0.1:5500",
         credentials: true,
     })
 )

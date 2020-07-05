@@ -11,20 +11,20 @@
             })
             .catch((err) => console.log(err))
     }
+
     function get_content(tag) {
-        root.innerHTML = ""
         if (!preCache[tag]) {
             _fetch(`views/${tag}.html`, (html) => {
-                root.insertAdjacentHTML("beforeend", html)
+                root.innerHTML = html
                 preCache[tag] = {}
                 preCache[tag].html = html
             })
-            _fetch(`./js/${tag}.js`, (js) => {
+            _fetch(`js/${tag}.js`, (js) => {
                 eval(js)
                 preCache[tag].js = js
             })
         } else {
-            root.insertAdjacentHTML("beforeend", preCache[tag].html)
+            root.innerHTML = preCache[tag].html
             eval(preCache[tag].js)
         }
     }

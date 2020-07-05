@@ -1,7 +1,10 @@
-authantication((e) => {
-    if (!e.auth) window.location = "/"
-    else document.querySelector(".loading").style.display = "none"
-})
+function checkAuth() {
+    authantication((e) => {
+        if (!e.auth) window.location = "/"
+        else document.querySelector(".loading").style.display = "none"
+    })
+}
+checkAuth()
 
 function error(text) {
     let er = document.querySelector(".error")

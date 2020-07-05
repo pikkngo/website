@@ -94,7 +94,7 @@ $bold_font: pikkngo_bold;
         color: white;
         font-size: 21px;
         font-family: $medium_font;
-        .store_name{
+        .store_name {
             padding: 10px;
             padding-left: 20px;
             padding-right: 20px;
@@ -143,8 +143,31 @@ $bold_font: pikkngo_bold;
                         display: flex;
                         margin-right: 10px;
                         margin-left: 10px;
-                        .item_q {
-                            width: 10px;
+                        .q {
+                            height: 25px;
+                            width: 25px;
+                            display: flex;
+                            justify-content: center;
+                            font-family: $regular_font;
+                            font-size: 12px;
+                            align-items: center;
+                            border: solid;
+                            border-width: 1px;
+                            border-color: grey;
+                            border-radius: 4px;
+                        }
+                    }
+                    .item_add {
+                        background-color: rgb(57, 206, 57);
+                        width: 70px;
+                        height: 25px;
+                        color: white;
+                        border-radius: 5px;
+                        border: none;
+                        outline: none;
+                        &:active {
+                            color: rgb(57, 206, 57);
+                            background-color: white;
                         }
                     }
                 }
@@ -152,6 +175,10 @@ $bold_font: pikkngo_bold;
         }
     }
 }
+.cartdiv {
+    display: none;
+}
+
 @keyframes menu_wrap_animation {
     from {
         top: 100%;
