@@ -1,0 +1,73 @@
+:root {
+    // --image: url("../assets/images/img.png");
+}
+
+@font-face {
+    font-family: pikkngo;
+    src: url("../assets/fonts/primary.woff2");
+}
+@font-face {
+    font-family: pikkngo_medium;
+    src: url("../assets/fonts/primary_medium.woff2");
+}
+@font-face {
+    font-family: pikkngo_bold;
+    src: url("../assets/fonts/primary_bold.woff2");
+}
+
+$primaryColor: green;
+$regular_font: pikkngo;
+$medium_font: pikkngo_medium;
+$bold_font: pikkngo_bold;
+
+.footer {
+    font-family: $regular_font;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    box-shadow: -1px 3px 6px 0px #656565;
+    background-color: white;
+    .tab {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+.root {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: calc(100% - 50px);
+    overflow-y: scroll;
+}
+
+.order_card {
+    position: relative;
+    background: rgb(235, 235, 235);
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+
+    .cardHeader {
+        position: relative;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        background-color: red;
+    }
+    .bottomHeader{
+        display: flex;
+        padding: 10px;
+        .expand{
+            position: relative;
+            margin-left: auto;
+            // margin-right: 20px;
+        }
+    }
+}

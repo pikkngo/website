@@ -12,6 +12,7 @@ db.serialize(() => {
     db.run(
         "CREATE TABLE IF NOT EXISTS user_photo (id text PRIMARY KEY, uid text , photo blob, datetime numbe, FOREIGN KEY (uid) REFERENCES users(id))"
     )
+
     //stores
     db.run(
         "CREATE TABLE IF NOT EXISTS stores (id text PRIMARY KEY, name text, username text, email text, mno number, password text, datetime number)"
@@ -23,16 +24,10 @@ db.serialize(() => {
         "CREATE TABLE IF NOT EXISTS store_photo (id text PRIMARY KEY, sid text , photo blob, datetime number, FOREIGN KEY (sid) REFERENCES stores(id))"
     )
     db.run(
-        "CREATE TABLE IF NOT EXISTS items (id text PRIMARY KEY, sid text , name text, description text, price number, datetime number, FOREIGN KEY (sid) REFERENCES stores(id))"
+        "CREATE TABLE IF NOT EXISTS items (id text PRIMARY KEY, sid text , name text, description text, price number, hidden number, datetime number, FOREIGN KEY (sid) REFERENCES stores(id))"
     )
     db.run(
         "CREATE TABLE IF NOT EXISTS subitems (id text PRIMARY KEY, item_id text , name text, description text, price number, datetime number, FOREIGN KEY (item_id) REFERENCES items(id))"
-    )
-    db.run(
-        "CREATE TABLE IF NOT EXISTS wallet(id text PRIMARY KEY, sid text, value number, datetime number, FOREIGN KEY (sid) REFERENCES stores(id))"
-    )
-    db.run(
-        "CREATE TABLE IF NOT EXISTS waller_history(id text PRIMARY KEY, wallet_id text, withdraw_value number, transactionID text, datetime number, FOREIGN KEY (wallet_id) REFERENCES wallet(id))"
     )
 
     //orders
@@ -40,10 +35,11 @@ db.serialize(() => {
         "CREATE TABLE IF NOT EXISTS orders (id text PRIMARY KEY, uid text, sid text, status text, datetime number, FOREIGN KEY (uid) REFERENCES users(id), FOREIGN KEY (sid) REFERENCES stores(id))"
     )
     db.run(
-        "CREATE TABLE IF NOT EXISTS order_detail(id text PRIMARY KEY, order_id text, item_id text, datetime number, FOREIGN KEY (order_id) REFERENCES orders(id))"
+        "CREATE TABLE IF NOT EXISTS order_views(id text PRIMARY KEY, order_id text, user_viewed number, store_viewed number, datetime number, FOREIGN KEY (order_id) REFERENCES orders(id))"
     )
-    // Payments
-
+    db.run(
+        "CREATE TABLE IF NOT EXISTS order_detail(id text PRIMARY KEY, order_id text, item_id text, quantity number, totalPrice number, datetime number, FOREIGN KEY (order_id) REFERENCES orders(id))"
+    )
     console.log("Database is ready to go!")
 })
 

@@ -1,0 +1,92 @@
+@font-face {
+  font-family: pikkngo;
+  src: url("../assets/fonts/primary.woff2");
+}
+
+@font-face {
+  font-family: pikkngo_medium;
+  src: url("../assets/fonts/primary_medium.woff2");
+}
+
+@font-face {
+  font-family: pikkngo_bold;
+  src: url("../assets/fonts/primary_bold.woff2");
+}
+
+.footer {
+  font-family: pikkngo;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  height: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-shadow: -1px 3px 6px 0px #656565;
+          box-shadow: -1px 3px 6px 0px #656565;
+  background-color: white;
+}
+
+.footer .tab {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.root {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: calc(100% - 50px);
+  overflow-y: scroll;
+}
+
+.order_card {
+  position: relative;
+  background: #ebebeb;
+  margin: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.order_card .cardHeader {
+  position: relative;
+  height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-left: 10px;
+  background-color: red;
+}
+
+.order_card .bottomHeader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 10px;
+}
+
+.order_card .bottomHeader .expand {
+  position: relative;
+  margin-left: auto;
+}
+/*# sourceMappingURL=style.css.map */

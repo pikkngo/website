@@ -36,8 +36,7 @@
             d.setTime(d.getTime() + 24 * 60 * 60 * 1000)
         }
         var e = "expires=" + d.toGMTString()
-        let k = `${n}=${i};${e};path=/`
-        document.cookie = k
+        document.cookie = n + "=" + i + ";" + e + ";path=/"
     }
     return cookie
 })

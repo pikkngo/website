@@ -70,7 +70,8 @@
             if (!tf) {
                 POST(`${baseURL}/users/login`, window.data, (e) => {
                     if (e.signin) {
-                        cookie.setItem("token", e.token)
+                        cookie.setItem("user_token", e.token)
+                        cookie.setItem("uid", e.id)
                         location.href = "/home"
                     } else error(e.message)
                 })
@@ -139,7 +140,8 @@
                                 window.data,
                                 (e) => {
                                     if (e.signup) {
-                                        cookie.setItem("token", e.token)
+                                        cookie.setItem("user_token", e.token)
+                                        cookie.setItem("uid", e.id)
                                         window.location.href = "/home"
                                     } else {
                                         error(e.message)

@@ -23,7 +23,7 @@ function GET(url, callback) {
 
 function authantication(callback) {
     GET(
-        `${baseURL}/users/auth?user_token=${cookie.getItem("user_token")}`,
+        `${baseURL}/stores/auth?store_token=${cookie.getItem("store_token")}`,
         (e) => {
             callback(e)
         }

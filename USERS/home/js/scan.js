@@ -1,5 +1,6 @@
 let cart = []
-
+let socket = io(baseURL)
+window.socket = socket
 
 function scan() {
     qrReader()
@@ -19,21 +20,26 @@ function qrReader() {
                 .decodeOnceFromVideoDevice(firstDeviceId, "video")
                 .then((result) => {
                     //making request to server to know if it is correct qrcode
-                    GET(`${baseURL}/users/getStore?sid=${result.text}`, (e) => {
-                        console.log(JSON.stringify(e.data))
-                        if (e.verify) {
-                            menu_wrap.style.display = "block"
-                            display_menu(e.data)
-                        } else {
-                            qrReader()
+                    GET(
+                        `${baseURL}/users/getStore?sid=${
+                            result.text
+                        }&user_token=${cookie.getItem("user_token")}`,
+                        (e) => {
+                            window.store = e.data
+                            if (e.verify) {
+                                menu_wrap.style.display = "block"
+                                display_menu(window.store)
+                            } else {
+                                qrReader()
+                            }
                         }
-                    })
+                    )
                 })
         })
         .catch((err) => console.error(err))
 }
 function display_menu() {
-    let data = {
+    window.store = {
         id: "08f5f2af2392f5c9d49d5a3356bd67906326f56c04b679dfdbb37fa26632b3fd",
         name: "Store Example",
         username: "storeExample",
@@ -71,6 +77,7 @@ function display_menu() {
             },
         ],
     }
+    let data = window.store
 
     let header = document.querySelector(".header")
     let menu_body = document.querySelector(".menu_body")
@@ -84,7 +91,7 @@ function display_menu() {
     header.append(store_name_div)
     if (data.image) header.style.backgroundImage = `url(${data.image})`
     for (let item of data.items) {
-        let card = createItemCard(item)
+        let card = createItem(item)
         menu_body.append(card)
     }
 }
@@ -98,11 +105,158 @@ function checkCartItems(cart, item) {
     return { result: false }
 }
 
-function checkCart(){
-    console.log(cart)
+let _view_cart = document.querySelector(".viewCart")
+let place_order = document.querySelector(".place_order")
+
+let visible = false
+_view_cart.onclick = () => {
+    let _cartdiv = document.querySelector(".cartdiv")
+    if (!visible) {
+        _cartdiv.classList.add("view_cart")
+        _cartdiv.classList.remove("hide_view_cart")
+        _view_cart.innerText = "Hide Cart"
+        visible = !visible
+    } else {
+        _cartdiv.classList.remove("view_cart")
+        _cartdiv.classList.add("hide_view_cart")
+        _view_cart.innerText = "View Cart"
+        visible = !visible
+    }
 }
 
-function createItemCard(data) {
+place_order.onclick = () => {
+    let data = {
+        sid: window.store.id,
+        uid: cookie.getItem("uid"),
+        cart,
+        token: cookie.getItem("user_token"),
+    }
+    socket.emit("post_order", data)
+    // POST(`${baseURL}/users/post_order?user_token=${cookie.getItem("user_token")`, data, (response) => {
+    //     console.log(response)
+    // })
+}
+socket.on("place_order_status", (data) => {
+    if (data.uid == cookie.getItem("uid")) {
+        if (!data.posted) error(data.message)
+        else {
+            location.hash = "#order"
+            console.log("posted")
+        }
+    }
+})
+
+function cartChange() {
+    let _cartdiv = document.querySelector(".cartdiv")
+    let _totaldiv = document.querySelector(".totalprice")
+    let _totalitemsdiv = document.querySelector(".cart_items")
+
+    if (cart.length > 0) {
+        //show half cart
+        _cartdiv.classList.remove("hide_cart")
+        _cartdiv.classList.add("show_cart")
+
+        let total_amount = 0
+        let total_items = 0
+        for (let item of cart) {
+            total_amount += item.price
+            total_items += item.quantity
+        }
+        _totaldiv.innerText = `Rs ${total_amount}`
+        _totalitemsdiv.innerText = `${total_items} items`
+    } else {
+        _cartdiv.classList.remove("show_cart")
+        _cartdiv.classList.add("hide_cart")
+
+        //cart also change
+        _cartdiv.classList.remove("view_cart")
+        _view_cart.innerText = "View Cart"
+        visible = !visible
+    }
+    updateCart()
+}
+
+function updateCart() {
+    console.log(cart)
+    let cart_body = document.querySelector(".cart_body")
+    cart_body.innerHTML = ""
+    for (let item of cart) {
+        let i = createCartItem(item)
+        cart_body.append(i)
+    }
+}
+
+//cart item
+function createCartItem(data) {
+    let card = el("div", {
+        class: "item_card",
+    })
+    let title = el("div", {
+        class: "item_title",
+        innerText: data.name,
+    })
+    let description = el("div", {
+        class: "item_description",
+        innerText: data.description,
+    })
+    let price = el("div", {
+        class: "item_price",
+        innerText: `Rs.${data.price}`,
+    })
+
+    let wrap = el("div", {
+        class: "wrap_item_quantity",
+    })
+    let quantity_inp = el("div", {
+        class: "q item_q",
+        innerText: data.quantity,
+    })
+    let sub = el("div", {
+        class: "q item_q_sub",
+        innerText: "-",
+        onclick: function () {
+            if (parseInt(quantity_inp.textContent) > 1) {
+                quantity_inp.textContent =
+                    parseInt(quantity_inp.textContent) - 1
+                for (let item of cart) {
+                    if (item.id == data.id) {
+                        item.quantity = parseInt(quantity_inp.textContent)
+                        item.price = item.quantity * data.naturalPrice
+                    }
+                }
+            }
+        },
+    })
+    let add = el("div", {
+        class: "q item_q_add",
+        innerText: "+",
+        onclick: function () {
+            quantity_inp.textContent = parseInt(quantity_inp.textContent) + 1
+            for (let item of cart) {
+                if (item.id == data.id) {
+                    item.quantity = parseInt(quantity_inp.textContent)
+                    item.price = item.quantity * data.naturalPrice
+                }
+            }
+            console.log(cart)
+        },
+    })
+    wrap.append(sub, quantity_inp, add)
+    let remove_btn = el("button", {
+        class: "item_remove",
+        id: data.id,
+        innerText: "Remove Item",
+        onclick: function () {
+            cart = cart.filter((e) => e.id != this.id)
+            cartChange()
+        },
+    })
+    card.append(title, description, price, wrap, remove_btn)
+    return card
+}
+
+//menu item
+function createItem(data) {
     // data = {title, description, price, id}
     let card = el("div", {
         class: "item_card",
@@ -127,14 +281,16 @@ function createItemCard(data) {
         class: "q item_q",
         innerText: 1,
     })
-    let sub = el("button", {
+    let sub = el("div", {
         class: "q item_q_sub",
         innerText: "-",
         onclick: function () {
-            quantity_inp.textContent = parseInt(quantity_inp.textContent) - 1
+            if (parseInt(quantity_inp.textContent) > 1)
+                quantity_inp.textContent =
+                    parseInt(quantity_inp.textContent) - 1
         },
     })
-    let add = el("button", {
+    let add = el("div", {
         class: "q item_q_add",
         innerText: "+",
         onclick: function () {
@@ -145,22 +301,25 @@ function createItemCard(data) {
 
     let add_btn = el("button", {
         class: "item_add",
-        id: data.id,
         innerText: "Add Item",
         onclick: function () {
             let q = parseInt(quantity_inp.textContent)
             let item = {
-                id: this.id,
+                id: data.id,
                 quantity: q,
-                price: q * parseInt(price.textContent.slice(3)),
+                naturalPrice: data.price,
+                price: q * data.price,
+                name: data.name,
+                description: data.description,
             }
             let _checkcart = checkCartItems(cart, item)
             if (_checkcart.result) {
-                cart[_checkcart.i] = item
+                cart[_checkcart.i].quantity += item.quantity
+                cart[_checkcart.i].price += item.price
             } else {
                 cart.push(item)
             }
-            checkCart()
+            cartChange()
         },
     })
 
