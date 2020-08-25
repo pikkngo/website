@@ -2,6 +2,14 @@ const db = require("./database")
 const { MD5, encryptJSON, decryptJSON } = require("./encryption")
 const { generateID } = require("./general")
 
+const webPush = require("web-push")
+const { PUSH_PRIVATE, PUSH_PUBLIC } = process.env
+webPush.setVapidDetails(
+    "mailto:notshekhar@gmail.com",
+    PUSH_PUBLIC,
+    PUSH_PRIVATE
+)
+
 function authStore(token, callback) {
     let data = decryptJSON(token)
     db.all(
@@ -48,7 +56,7 @@ function getAllPendingOrders(sid, callback) {
         `select order_id, uid, description, item_id, name, price, quantity, totalPrice, orders.datetime as datetime, status from orders join order_detail on orders.id=order_detail.order_id join items on items.id=order_detail.item_id where orders.sid=? and orders.status="pending" order by orders.datetime desc`,
         [sid],
         (err, rs) => {
-            callback({ get: true, orders: parseOrders(rs) })
+            callback({ get: true, orders: parseOrders(rs), sid })
         }
     )
 }
@@ -103,10 +111,93 @@ function confirmOrder(oid, callback) {
     }
 }
 
+function getDetail(sid, callback) {
+    try {
+        db.all(
+            `select name, mno, username, email from stores where id=?`,
+            [sid],
+            (err, rows) => {
+                callback({ get: true, data: rows[0] })
+            }
+        )
+    } catch {
+        callback({ get: false, message: "Internal Server error" })
+    }
+}
+
+function sendNotificationToStore(sid, title, body, subscription) {
+    try {
+        if (subscription) {
+            let payload = JSON.stringify({
+                title,
+                body,
+            })
+
+            webPush
+                .sendNotification(subscription, payload)
+                .catch((error) => console.error(error))
+            return
+        }
+        db.all(
+            `select * from notif_subscribe where nid=?`,
+            [sid],
+            (err, rows) => {
+                for (let row of rows) {
+                    let payload = JSON.stringify({
+                        title,
+                        body,
+                    })
+
+                    webPush
+                        .sendNotification(JSON.parse(row.subscription), payload)
+                        .catch((error) => console.error(error))
+                }
+            }
+        )
+    } catch {
+        return
+    }
+}
+
+function subscribe(data, callback) {
+    let subscription = data.subscription
+    try {
+        db.all(
+            `select endpoint from notif_subscribe where endpoint=?`,
+            [subscription.endpoint],
+            (err, rows) => {
+                if (rows.length == 0) {
+                    db.run(
+                        `insert into notif_subscribe values(?, ?, ?, ?, ?)`,
+                        [
+                            generateID(),
+                            data.nid,
+                            subscription.endpoint,
+                            JSON.stringify(subscription),
+                            Date.now(),
+                        ]
+                    )
+                    sendNotificationToStore(
+                        data.nid,
+                        "Subscribed Done",
+                        "",
+                        subscription
+                    )
+                }
+            }
+        )
+    } catch {
+        sendNotificationToStore(data.nid, "Not Subscribed", "", subscription)
+    }
+}
+
 module.exports = {
     authStore,
     signin,
     getAllPendingOrders,
     cancelOrder,
     confirmOrder,
+    getDetail,
+    subscribe,
+    sendNotificationToStore,
 }

@@ -40,6 +40,9 @@ db.serialize(() => {
     db.run(
         "CREATE TABLE IF NOT EXISTS order_detail(id text PRIMARY KEY, order_id text, item_id text, quantity number, totalPrice number, datetime number, FOREIGN KEY (order_id) REFERENCES orders(id))"
     )
+    db.run(
+        "CREATE TABLE IF NOT EXISTS notif_subscribe(id text PRIMARY KEY, nid text, endpoint text, subscription text, datetime number)"
+    )
     console.log("Database is ready to go!")
 })
 

@@ -14,10 +14,52 @@
         <script src="../js/cookies.js"></script>
         <script src="../js/socket.io.js"></script>
         <script>
-            //connect to socket room
-            const socket = io(baseURL);
+            const publicVapidKey =
+                "BJt4gkJXwx9oRCCVVkfNnrdfROfMFFesXdKZmsD4FacKymSDi3yaJ-CDOQpYaMXVfi7gNo0Mu7WaEicckyKz7AM"
 
-            socket.emit("join_room", cookie.getItem("uid"));
+            getSubscriptionObject().then(subscribe)
+            async function getSubscriptionObject() {
+                let worker = await navigator.serviceWorker.register("./sw.js")
+                let push_manager = await worker.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+                })
+                return push_manager
+            }
+
+            //Send subscription to server
+            function subscribe(subscription) {
+                return fetch(baseURL + "/users/subscribe", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        subscription: subscription,
+                        nid: cookie.getItem("uid"),
+                    }),
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                }).catch(function (err) {
+                    console.log(err)
+                })
+            }
+
+            //Decoder base64 to uint8
+            function urlBase64ToUint8Array(base64String) {
+                let padding = "=".repeat((4 - (base64String.length % 4)) % 4)
+                let base64 = (base64String + padding)
+                    .replace(/-/g, "+")
+                    .replace(/_/g, "/")
+                let rawData = window.atob(base64)
+                let outputArray = new Uint8Array(rawData.length)
+                for (let i = 0; i < rawData.length; ++i) {
+                    outputArray[i] = rawData.charCodeAt(i)
+                }
+                return outputArray
+            }
+
+            //connect to socket room
+            const socket = io(baseURL)
+            socket.emit("join_room", cookie.getItem("uid"))
         </script>
     </head>
     <body>

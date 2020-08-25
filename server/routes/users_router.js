@@ -8,6 +8,8 @@ const {
     verify_sid,
     post_order,
     getAllPendingOrders,
+    subscribe,
+    getDetail,
 } = require("../serverJS/users")
 
 const router = express.Router()
@@ -88,6 +90,26 @@ router.get("/getAllPendingOrders", (req, res) => {
             res.json({ get: false, message: "Try to relogin" })
         }
     })
+})
+router.get("/account_details", (req, res) => {
+    let { uid, user_token } = req.query
+    auth(user_token, (e) => {
+        if (e) {
+            getDetail(uid, (data) => {
+                res.json(data)
+            })
+        } else {
+            res.json({
+                get: false,
+                message: "Try relogin",
+            })
+        }
+    })
+})
+router.post("/subscribe", (req, res) => {
+    let data = req.body
+    subscribe(data)
+    res.status(201).json({})
 })
 
 module.exports = router

@@ -2,6 +2,14 @@ const db = require("./database")
 const { MD5, encryptJSON, decryptJSON } = require("./encryption")
 const { generateID } = require("./general")
 
+const webPush = require("web-push")
+const { PUSH_PRIVATE, PUSH_PUBLIC } = process.env
+webPush.setVapidDetails(
+    "mailto:notshekhar@gmail.com",
+    PUSH_PUBLIC,
+    PUSH_PRIVATE
+)
+
 function signup(data, callback) {
     // data = {}
 
@@ -123,7 +131,8 @@ function verify_sid(sid, callback) {
                         `select photo from store_photo where sid=?`,
                         [sid],
                         (err, rs) => {
-                            d.data.image = rs[0].photo
+                            console.log(rs)
+                            d.data.image = rs[0]
                         }
                     )
                     //fetching all items
@@ -212,6 +221,82 @@ function parseOrders(orders) {
     return parsed
 }
 
+function getDetail(uid, callback) {
+    try {
+        db.all(`select fname, lname, mno, username, email from users where id=?`, [uid], (err, rows) => {
+            callback({ get: true, data: rows[0] })
+        })
+    } catch {
+        callback({ get: false, message: "Internal Server error" })
+    }
+}
+
+function sendNotificationToUser(uid, title, body, subscription) {
+    try {
+        if (subscription) {
+            let payload = JSON.stringify({
+                title,
+                body,
+            })
+
+            webPush
+                .sendNotification(subscription, payload)
+                .catch((error) => console.error(error))
+            return
+        }
+        db.all(
+            `select * from notif_subscribe where nid=?`,
+            [uid],
+            (err, rows) => {
+                for (let row of rows) {
+                    let payload = JSON.stringify({
+                        title,
+                        body,
+                    })
+
+                    webPush
+                        .sendNotification(JSON.parse(row.subscription), payload)
+                        .catch((error) => console.error(error))
+                }
+            }
+        )
+    } catch {
+        return
+    }
+}
+
+function subscribe(data, callback) {
+    let subscription = data.subscription
+    try {
+        db.all(
+            `select endpoint from notif_subscribe where endpoint=?`,
+            [subscription.endpoint],
+            (err, rows) => {
+                if (rows.length == 0) {
+                    db.run(
+                        `insert into notif_subscribe values(?, ?, ?, ?, ?)`,
+                        [
+                            generateID(),
+                            data.nid,
+                            subscription.endpoint,
+                            JSON.stringify(subscription),
+                            Date.now(),
+                        ]
+                    )
+                    sendNotificationToUser(
+                        data.nid,
+                        "Subscribed Done",
+                        "",
+                        subscription
+                    )
+                }
+            }
+        )
+    } catch {
+        sendNotificationToUser(data.nid, "Not Subscribed", "", subscription)
+    }
+}
+
 module.exports = {
     signup,
     signin,
@@ -219,4 +304,7 @@ module.exports = {
     verify_sid,
     post_order,
     getAllPendingOrders,
+    subscribe,
+    sendNotificationToUser,
+    getDetail,
 }

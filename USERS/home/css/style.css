@@ -77,7 +77,7 @@
 }
 
 .menu_wrap {
-  display: block;
+  display: none;
   position: fixed;
   overflow-x: scroll;
   z-index: 5;

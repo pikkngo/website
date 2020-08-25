@@ -1,17 +1,18 @@
 const socket = require("socket.io")
+
 const fs = require("fs")
 const https = require("https")
 
-const { auth, post_order } = require("./serverJS/users")
+const { auth, post_order, sendNotificationToUser } = require("./serverJS/users")
 const {
     authStore,
     getAllPendingOrders,
     cancelOrder,
     confirmOrder,
+    sendNotificationToStore,
 } = require("./serverJS/stores")
 
 const app = require("./app")
-
 require("dotenv").config()
 
 const privateKey = fs.readFileSync("./https/localhost.key")
@@ -47,13 +48,15 @@ io.on("connection", (s) => {
                             posted: r,
                         })
                         getAllPendingOrders(data.sid, (rows) => {
-                            let d = {
-                                ...rows,
-                                ...{
-                                    sid: data.sid,
-                                },
-                            }
+                            let d = rows
+                            //send notif to store of sid  of new order recieve
                             s.to(data.sid).broadcast.emit("new_order", d)
+
+                            let body = ""
+                            for (let order of rows.orders[0].order_detail) {
+                                body += `${order.quantity} ${order.name} INR${order.totalPrice}\n`
+                            }
+                            sendNotificationToStore(data.sid, "New Order", body)
                         })
                     } else
                         s.emit("place_order_status", {
@@ -78,8 +81,11 @@ io.on("connection", (s) => {
         authStore(store_token, (e) => {
             if (e) {
                 cancelOrder(order_id, (res) => {
+                    // send notif to user of uid
+
                     s.to(uid).broadcast.emit("order_canceled_store", res)
                     s.emit("order_cancel_status", res)
+                    sendNotificationToUser(uid, "Your Order got canceled")
                 })
             } else {
                 s.emit("order_cancel_status", {
@@ -96,8 +102,11 @@ io.on("connection", (s) => {
         authStore(store_token, (e) => {
             if (e) {
                 confirmOrder(order_id, (res) => {
+                    // send confermation notif to user of uid
+
                     s.to(uid).broadcast.emit("order_confirmed_store", res)
                     s.emit("order_confirm_status", res)
+                    sendNotificationToUser(uid, "Your Order has been confirmed")
                 })
             } else {
                 s.emit("order_confirm_status", {

@@ -8,6 +8,8 @@ const {
     getAllPendingOrders,
     cancelOrder,
     confirmOrder,
+    getDetail,
+    subscribe,
 } = require("../serverJS/stores")
 
 router.use(
@@ -70,6 +72,27 @@ router.get("/confirmOrder", (req, res) => {
             res.json({ get: false, message: "Try to relogin" })
         }
     })
+})
+router.get("/account_details", (req, res) => {
+    let { sid, store_token } = req.query
+    authStore(store_token, (e) => {
+        if (e) {
+            getDetail(sid, (data) => {
+                res.json(data)
+            })
+        } else {
+            res.json({
+                get: false,
+                message: "Try relogin",
+            })
+        }
+    })
+})
+
+router.post("/subscribe", (req, res) => {
+    let data = req.body
+    subscribe(data)
+    res.status(201).json({})
 })
 
 module.exports = router

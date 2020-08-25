@@ -13,9 +13,62 @@
         <script src="../js/socket.io.js"></script>
 
         <script>
+            const publicVapidKey =
+                "BJt4gkJXwx9oRCCVVkfNnrdfROfMFFesXdKZmsD4FacKymSDi3yaJ-CDOQpYaMXVfi7gNo0Mu7WaEicckyKz7AM"
+
+            // if (window.Notification) {
+            //     if (Notification.permission != "granted") {
+            //         Notification.requestPermission(() => {
+            //             if (Notification.permission === "granted") {
+            getSubscriptionObject().then(subscribe)
+            //             }
+            //         }).catch(function (err) {
+            //             console.log(err)
+            //         })
+            //     }
+            // }
+            //Generate subscription object
+            async function getSubscriptionObject() {
+                let worker = await navigator.serviceWorker.register("./sw.js")
+                let push_manager = await worker.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+                })
+                return push_manager
+            }
+
+            //Send subscription to server
+            function subscribe(subscription) {
+                return fetch(baseURL + "/stores/subscribe", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        subscription: subscription,
+                        nid: cookie.getItem("sid"),
+                    }),
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                }).catch(function (err) {
+                    console.log(err)
+                })
+            }
+
+            //Decoder base64 to uint8
+            function urlBase64ToUint8Array(base64String) {
+                let padding = "=".repeat((4 - (base64String.length % 4)) % 4)
+                let base64 = (base64String + padding)
+                    .replace(/-/g, "+")
+                    .replace(/_/g, "/")
+                let rawData = window.atob(base64)
+                let outputArray = new Uint8Array(rawData.length)
+                for (let i = 0; i < rawData.length; ++i) {
+                    outputArray[i] = rawData.charCodeAt(i)
+                }
+                return outputArray
+            }
+
             //connect to socket room
             const socket = io(baseURL)
-
             socket.emit("join_room", cookie.getItem("sid"))
             socket.on("okay", (d) => console.log(d))
         </script>
@@ -29,9 +82,11 @@
 
         <div class="root" id="root"></div>
         <div class="footer">
-            <div class="tab order">Orders</div>
-            <div class="tab scan">Menu</div>
-            <div class="tab account">Account</div>
+            <div class="tab order" onclick="location.hash='orders'">Orders</div>
+            <div class="tab scan" >Menu</div>
+            <div class="tab account" onclick="location.hash='account'">
+                Account
+            </div>
         </div>
         <script src="./js/router.js"></script>
         <script src="./js/index.js"></script>
